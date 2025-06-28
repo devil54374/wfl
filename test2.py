@@ -23,6 +23,7 @@ total_sum = 0
 num = 1
 
 while num <= 10000:
+    # 判断条件：能被3整除 OR (能被5整除且不能被15整除)
     if (num % 3 == 0) or (num % 5 == 0 and num % 15 != 0):
         total_sum += num
     num += 1
