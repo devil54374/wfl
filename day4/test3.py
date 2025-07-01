@@ -51,3 +51,36 @@ for bar in bars:
                  ha='center', va='bottom', fontsize=11)
 plt.tight_layout()
 plt.show()
+
+# 计算不同性别和年龄段组合的生还率
+survived_male = df[df['Sex'] == 'male'].groupby('AgeGroup')['Survived'].mean()
+survived_female = df[df['Sex'] == 'female'].groupby('AgeGroup')['Survived'].mean()
+
+# 分组柱状图：性别和年龄段组合的生还率
+plt.figure(figsize=(11, 6))
+x = np.arange(len(age_labels))
+width = 0.35
+
+male_rates = survived_male.reindex(age_labels).values
+female_rates = survived_female.reindex(age_labels).values
+
+bar1 = plt.bar(x - width/2, male_rates, width, label='男性', color='#4F81BD')
+bar2 = plt.bar(x + width/2, female_rates, width, label='女性', color='#C0504D')
+
+plt.xlabel('年龄段', fontsize=12)
+plt.ylabel('生还率', fontsize=12)
+plt.title('不同年龄段男女生还率对比', fontsize=14)
+plt.xticks(x, age_labels)
+plt.ylim(0, 1)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.legend(fontsize=11)
+
+# 添加数值标签
+for bars in [bar1, bar2]:
+    for bar in bars:
+        if not np.isnan(bar.get_height()):
+            plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f'{bar.get_height():.2f}',
+                     ha='center', va='bottom', fontsize=10)
+
+plt.tight_layout()
+plt.show()
